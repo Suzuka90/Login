@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login | MyLogin</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #f984df;
+      --primary-hover: #f69af6c6;
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --text: #fab7ee;
+      --border: #e2e8f0;
+      --error: #ef4444;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    input[type="email"]:focus, input[type="password"]:focus {
+      color: #000000 !important;
+    }
+    
+    /* NASCONDI tutto inizialmente */
+  .login-container {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.8s ease 0.7s; /* DELAY di 0.7s + animazione */
+  }
+
+  /* MOSTRA tutto DOPO il quadrato */
+  body:hover .login-container {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(135deg, #64045fe4 0%, #f43dfe 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 100px;      /* Quadrato iniziale piccolo */
+    height: 100px;
+    background: #ffffff;  /* Bianco puro */
+    border-radius: 8px;   /* Angoli arrotondati opzionali */
+    transform: translate(-50%, -50%);
+    transition: all 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    z-index: 10;
+    pointer-events: auto; /* Come prima */
+  }
+
+  body:hover::before {
+    width: 120vw;
+    height: 120vh;
+    background: transparent;
+    pointer-events: none; /* Disabilita eventi e rende cliccabile sotto */
+  }
+    .login-container {
+      background: var(--card);
+      width: 100%;
+      max-width: 420px;
+      border-radius: 16px;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+      overflow: hidden;
+    }
+
+
+    .login-header {
+      background: var(--primary);
+      color: white;
+      text-align: center;
+      padding: 2rem 1.5rem;
+    }
+
+    .login-header h1 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .login-header p {
+      font-size: 0.95rem;
+      opacity: 0.9;
+    }
+
+    .login-body {
+      padding: 2rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.2rem;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      color: var(--text);
+      font-size: 0.95rem;
+    }
+
+    input {
+      width: 100%;
+      padding: 0.85rem 1rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: all 0.2s;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(250, 118, 225, 0.2);
+    }
+
+    .password-wrapper {
+      position: relative;
+    }
+
+    .toggle-password {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      left:auto;
+      width:auto;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1.1rem;
+      color: #f876eb;
+    }
+
+    /* Testo delle etichette */
+    label {
+      color: #000000 !important; /* Nero */
+    }
+
+    /* Testo dentro i campi input (email, password) */
+    input[type="email"], input[type="password"] {
+      color: #000000 !important; /* Nero */
+    }
+
+    /* Testo checkbox "Ricordami" */
+    .checkbox label {
+      color: #000000 !important; /* Nero */
+    }
+
+    .checkbox {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.9rem;
+      color: #f56df5; 
+      margin-bottom: 1.5rem;
+    }
+
+  .checkbox input[type="checkbox"] {
+    all: unset !important;  /* Resetta TUTTI gli stili del browser */
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    width: 12px !important;  
+    height: 12px !important;
+    border: 2px solid #f876eb !important;
+    border-radius: 3px !important;
+    background-color: white !important;
+    cursor: pointer !important;
+    position: relative !important;
+    flex-shrink: 0;
+    margin: 0;
+  }
+
+  .checkbox input[type="checkbox"]:checked {
+    background-color: #f876eb !important;
+    border-color: #f876eb !important;
+  }
+
+  .checkbox input[type="checkbox"]:checked::after {
+    content: '' !important;
+    position: absolute !important;
+    left: 2.5px !important;
+    top: 0px !important;
+    width: 3px !important;
+    height: 6px !important;
+    border: solid white !important;
+    border-width: 0 2px 2px 0 !important;
+    transform: rotate(45deg) !important;
+  }
+
+  .checkbox input[type="checkbox"]:hover {
+    border-color: #f69af6 !important; 
+  }
+    
+
+    button {
+      width: 100%;
+      padding: 0.9rem;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    button:hover {
+      background: var(--primary-hover);
+    }
+
+    button:disabled {
+      background: #fb95f6;
+      cursor: not-allowed;
+    }
+
+    .footer-links {
+      text-align: center;
+      margin-top: 1.5rem;
+      font-size: 0.9rem;
+    }
+
+    .footer-links a {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .footer-links a:hover {
+      text-decoration: underline;
+    }
+
+    .error {
+      color: var(--error);
+      font-size: 0.85rem;
+      margin-top: 0.5rem;
+      display: none;
+    }
+
+    @media (max-width: 480px) {
+      .login-container {
+        margin: 10px;
+      }
+      .login-header h1 {
+        font-size: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="login-container">
+    <div class="login-header">
+      <h1>MY LOGIN </h1>
+      <p>Accedi al tuo account</p>
+    </div>
+
+    <div class="login-body">
+      <form id="loginForm">
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" placeholder="email@esempio.com" required />
+          <p class="error" id="emailError">Inserisci un'email valida</p>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <div class="password-wrapper">
+            <input type="password" id="password" placeholder="••••••••" required minlength="6" />
+            <button type="button" class="toggle-password" id="togglePassword">👁️</button>
+          </div>
+          <p class="error" id="passError">Minimo 6 caratteri</p>
+        </div>
+
+        <div class="checkbox">
+          <input type="checkbox" id="remember" />
+          <label for="remember">Ricordami</label>
+        </div>
+
+        <button type="submit" id="submitBtn">Accedi</button>
+      </form>
+
+      <div class="footer-links">
+        <p><a href="#">Password dimenticata?</a></p>
+        <p>Non hai un account? <a href="#">Registrati</a></p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById('loginForm');
+    const email = document.getElementById('email');
+    const password = document.getElementById('password');
+    const emailError = document.getElementById('emailError');
+    const passError = document.getElementById('passError');
+    const submitBtn = document.getElementById('submitBtn');
+    const toggleBtn = document.getElementById('togglePassword');
+
+    // Toggle password visibility
+    toggleBtn.addEventListener('click', () => {
+     const type = password.type === 'password' ? 'text' : 'password';
+    password.type = type;
+     // Occhio aperto quando visibile (text), occhio chiuso quando nascosta (password)
+    toggleBtn.textContent = type === 'password' ? '🙈' : '👁️';
+    });
+
+
+    // Form validation
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      let valid = true;
+
+      // Email
+      if (!email.value.includes('@') || !email.value.includes('.')) {
+        emailError.style.display = 'block';
+        valid = false;
+      } else {
+        emailError.style.display = 'none';
+      }
+
+      // Password
+      if (password.value.length < 6) {
+        passError.style.display = 'block';
+        valid = false;
+      } else {
+        passError.style.display = 'none';
+      }
+
+      if (valid) {
+        alert('Login simulato con successo! 🎉\nEmail: ' + email.value);
+        // Qui potresti fare redirect o chiamare API
+      }
+    });
+
+    // Real-time validation
+    email.addEventListener('input', () => {
+      if (email.value.includes('@') && email.value.includes('.')) {
+        emailError.style.display = 'none';
+      }
+    });
+
+    password.addEventListener('input', () => {
+      if (password.value.length >= 6) {
+        passError.style.display = 'none';
+      }
+    });
+  </script>
+</body>
+</html>
